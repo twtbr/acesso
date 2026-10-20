@@ -1,6 +1,7 @@
 {
   "destinos": {
-    "principal": "https://t.me/gitredirecionadorbot"
+    "principal": "https://t.me/gitredirecionadorbot",
+    "famosas": "https://t.me/famosasonlyprivacybot"
   },
   "enviarOrigemAoBot": true
 }
