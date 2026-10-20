@@ -43,7 +43,7 @@
   const retry = document.getElementById("tentar");
   retry.addEventListener("click", () => window.location.reload());
 
-  const API_URL = ""; // Opcional: cole aqui o endpoint /config do seu Cloudflare Worker.
+  const API_URL = "https://redirecionador.matheisg40.workers.dev/config";
 
   async function start() {
     const controller = new AbortController();
