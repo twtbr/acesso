@@ -1,0 +1,6 @@
+{
+  "destinos": {
+    "principal": "https://t.me/gitredirecionadorbot"
+  },
+  "enviarOrigemAoBot": true
+}

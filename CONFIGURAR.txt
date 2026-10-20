@@ -1,0 +1,120 @@
+KIT PRONTO — COMO CONFIGURAR
+
+1. CRIAR O REPOSITÓRIO
+
+Crie um repositório público vazio no GitHub.
+Copie TODO o conteúdo desta pasta KIT-TEMPLATE para a raiz do novo repositório.
+Não copie a pasta KIT-TEMPLATE como uma subpasta: index.html deve ficar na raiz.
+
+2. COLOCAR O PRIMEIRO DESTINO
+
+Abra config.json e substitua:
+
+https://t.me/SEU_DESTINO
+
+pelo link real do bot, canal, grupo ou convite.
+
+O nome "principal" será usado no endereço:
+
+https://SEUUSUARIO.github.io/SEUREPOSITORIO/?bot=principal
+
+Para adicionar outros destinos, deixe o JSON assim:
+
+{
+  "destinos": {
+    "principal": "https://t.me/PrimeiroDestino",
+    "loiras": "https://t.me/SegundoDestino",
+    "canal02": "https://t.me/TerceiroDestino"
+  },
+  "enviarOrigemAoBot": false
+}
+
+3. PUBLICAR O GITHUB PAGES
+
+No repositório do GitHub, abra:
+
+Settings > Pages > Build and deployment > Source
+
+Selecione GitHub Actions.
+
+Depois abra Actions, escolha "Central de links" e execute Run workflow.
+
+O endereço será criado automaticamente no formato:
+
+https://SEUUSUARIO.github.io/SEUREPOSITORIO/?bot=principal
+
+4. CRIAR O BOT DE CONTROLE
+
+No Telegram, abra o @BotFather.
+Use /newbot, escolha o nome e guarde o token.
+Nunca coloque esse token em arquivos.
+
+Descubra o ID numérico da conta que será administradora.
+Se quiser alertas em um canal, adicione o bot como administrador do canal e obtenha o ID numérico do canal.
+
+5. CADASTRAR OS SECRETS
+
+No GitHub, abra:
+
+Settings > Secrets and variables > Actions > New repository secret
+
+Crie exatamente estes três Secrets:
+
+TELEGRAM_BOT_TOKEN = token fornecido pelo BotFather
+TELEGRAM_ADMIN_ID = ID numérico da conta autorizada
+TELEGRAM_CHANNEL_ID = ID numérico do canal de avisos
+
+Se não quiser canal de alertas, ainda será necessário adaptar o script para tornar TELEGRAM_CHANNEL_ID opcional.
+
+6. TESTAR O BOT
+
+Envie /start no privado do bot.
+Abra Actions > Central de links > Run workflow para processar imediatamente.
+Depois use:
+
+/listar
+/link principal
+/criar novo https://t.me/NovoDestino
+/destino principal https://t.me/DestinoAtualizado
+
+A consulta automática ocorre aproximadamente a cada cinco minutos e pode atrasar.
+Somente a conta cujo ID está em TELEGRAM_ADMIN_ID será aceita.
+
+7. IDENTIFICAR AS CONTAS DO X
+
+Use um src diferente em cada perfil:
+
+?bot=principal&src=twitter01
+?bot=principal&src=twitter02
+?bot=loiras&src=twitter03
+
+O parâmetro src já é aceito, mas este kit não registra estatísticas sozinho.
+Para ver relatórios, será necessário integrar um analytics, como Google Analytics 4.
+
+8. CLOUDFLARE OPCIONAL
+
+O arquivo redirect.js possui a constante API_URL vazia.
+Sem Cloudflare, o sistema funciona usando config.json e GitHub Pages.
+
+Se configurar um Worker com endpoint público /config, coloque o endereço nessa constante.
+O endpoint público deve permitir somente leitura. Proteja qualquer operação de alteração.
+Nunca coloque chaves da Cloudflare no redirect.js.
+
+9. SEGURANÇA
+
+- Nunca envie tokens para o repositório.
+- Se um token aparecer em conversa, print ou arquivo público, revogue-o no BotFather.
+- Use somente links completos https://t.me/.
+- Faça Pull no GitHub Desktop antes de editar localmente, pois o bot também cria commits.
+- Teste cada destino no navegador interno do X.
+
+10. ARQUIVOS DO KIT
+
+index.html                     página pública
+redirect.js                    valida e redireciona
+config.json                    destinos cadastrados
+.nojekyll                      configuração do Pages
+.github/workflows/central.yml  automação e publicação
+.github/telegram-state.json    posição dos comandos já processados
+scripts/telegram_bot.py        controle pelo Telegram
+tests/test_telegram_bot.py     testes de segurança e comandos
